@@ -222,88 +222,123 @@
   .menu-section .section-head p{color:rgba(246,234,210,.72);}
   .menu-section .section-head h2{color:var(--cream);}
 
-  .kipas-open-btn{
-    display:inline-flex; align-items:center; gap:10px;
-    background:var(--turmeric); color:var(--ink); font-weight:800; font-family:'Space Mono';
-    font-size:14px; padding:14px 24px; border-radius:999px; border:none;
-    box-shadow:0 10px 24px -8px rgba(232,168,46,.5);
-    transition:transform .25s var(--ease);
-    margin-bottom:64px;
+  .menu-list{
+    display:flex; flex-direction:column; gap:14px;
+    margin-bottom:8px;
   }
-  .kipas-open-btn:hover{transform:translateY(-3px) scale(1.02);}
-  .kipas-open-btn .fan-ico{transition:transform .4s var(--ease);}
-  .kipas-open-btn.active .fan-ico{transform:rotate(90deg);}
-
-  .kipas-wrap{
+  .menu-row{
     position:relative;
-    height:440px;
-    display:flex; align-items:flex-end; justify-content:center;
-    margin-bottom:20px;
-  }
-  .kipas-pivot{
-    position:relative; width:100%; height:100%;
-  }
-  .blade{
-    position:absolute; bottom:0; left:50%;
-    width:150px; height:340px;
-    transform-origin:bottom center;
-    transform:translateX(-50%) rotate(0deg);
-    transition:transform .8s var(--ease), box-shadow .3s ease;
+    display:grid; grid-template-columns:84px 1fr; gap:18px;
+    width:100%;
     background:linear-gradient(180deg, var(--wood), var(--charcoal-2));
-    border-radius:75px 75px 14px 14px;
     border:1px solid rgba(246,234,210,.12);
-    padding:22px 16px;
-    display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px;
-    cursor:pointer;
-    box-shadow:0 10px 24px -12px rgba(0,0,0,.6);
+    border-radius:var(--radius-md);
+    padding:16px;
+    cursor:pointer; text-align:left;
+    overflow:hidden;
+    transition:border-color .3s ease, box-shadow .3s var(--ease), background .35s ease, transform .3s var(--ease);
+    box-shadow:0 10px 22px -14px rgba(0,0,0,.6);
+    opacity:0; transform:translateX(-24px);
   }
-  .kipas-wrap.open .blade{ transform:translateX(-50%) rotate(var(--angle)); }
-  .blade:hover, .blade:focus-visible{ box-shadow:0 0 0 3px var(--turmeric) inset, 0 14px 30px -12px rgba(0,0,0,.7); }
-  .blade.active{ background:linear-gradient(180deg, var(--chili), var(--chili-dark)); }
-  .blade .b-icon{width:48px; height:48px; margin-top:6px;}
-  .blade .b-photo{
-    width:76px; height:76px; margin-top:6px; border-radius:50%;
+  .menu-row.row-in{opacity:1; transform:translateX(0); transition:opacity .55s var(--ease), transform .55s var(--ease), border-color .3s ease, box-shadow .3s var(--ease), background .35s ease;}
+  .menu-row:hover{ transform:translateY(-3px); box-shadow:0 16px 28px -12px rgba(0,0,0,.75); border-color:rgba(232,168,46,.4); }
+  .menu-row:active{ transform:translateY(-1px) scale(.99); }
+  .menu-row.active{
+    border-color:var(--turmeric);
+    background:linear-gradient(135deg, #3a2a1c, var(--charcoal-2) 60%);
+    box-shadow:0 18px 34px -14px rgba(232,168,46,.25), 0 0 0 1px rgba(232,168,46,.15) inset;
+    transform:translateY(-2px);
+  }
+  .menu-row .ripple{
+    position:absolute; border-radius:50%; pointer-events:none;
+    background:rgba(232,168,46,.35);
+    transform:scale(0); animation:ripple-anim .6s ease-out forwards;
+  }
+  @keyframes ripple-anim{ to{ transform:scale(1); opacity:0; } }
+
+  .menu-row .r-photo{
+    position:relative;
+    width:84px; height:84px; border-radius:16px;
     background-size:cover; background-position:center;
-    border:3px solid rgba(246,234,210,.85);
+    border:2px solid rgba(246,234,210,.6);
     box-shadow:0 6px 16px -6px rgba(0,0,0,.6);
+    align-self:start;
+    transition:transform .4s var(--ease), border-color .3s ease, box-shadow .3s ease;
   }
-  .blade .b-name{font-family:'Anton'; font-size:15px; color:var(--cream); letter-spacing:.3px; margin-top:auto;}
-  .blade .b-price{font-family:'Space Mono'; font-size:12px; color:var(--turmeric-soft);}
-  .blade.active .b-price{color:var(--cream);}
+  .menu-row:hover .r-photo{ transform:scale(1.06) rotate(-1deg); }
+  .menu-row.active .r-photo{
+    transform:scale(1.1) rotate(1deg);
+    border-color:var(--turmeric);
+    box-shadow:0 10px 22px -8px rgba(232,168,46,.55);
+  }
+  .menu-row .r-spicy-badge{
+    position:absolute; top:-6px; right:-6px;
+    width:24px; height:24px; border-radius:50%;
+    background:var(--chili); display:flex; align-items:center; justify-content:center;
+    font-size:12px; box-shadow:0 4px 10px -2px rgba(0,0,0,.6);
+    animation:flicker 1.8s ease-in-out infinite;
+    border:2px solid var(--charcoal-2);
+  }
+  @keyframes flicker{ 0%,100%{ transform:scale(1) rotate(-4deg); } 50%{ transform:scale(1.12) rotate(4deg); } }
 
-  .kipas-hint{
-    text-align:center; font-family:'Space Mono'; font-size:12.5px; color:rgba(246,234,210,.5);
-    margin-top:-2px; margin-bottom:44px;
+  .menu-row .r-main{min-width:0;}
+  .menu-row .r-top{display:flex; align-items:center; gap:12px;}
+  .menu-row .r-name{font-family:'Anton'; font-size:16.5px; color:var(--cream); letter-spacing:.2px; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; transition:color .3s ease;}
+  .menu-row.active .r-name{color:var(--turmeric);}
+  .menu-row .r-price{
+    font-family:'Space Mono'; font-size:13.5px; color:var(--turmeric-soft); white-space:nowrap; flex-shrink:0;
+    transition:transform .35s var(--ease);
   }
+  .menu-row.active .r-price{ transform:scale(1.12); color:var(--cream); }
+  .menu-row .r-caret{
+    font-family:'Space Mono'; font-size:12px; color:rgba(246,234,210,.5);
+    transition:transform .35s var(--ease), color .3s ease;
+    display:inline-block;
+  }
+  .menu-row.active .r-caret{transform:rotate(180deg) scale(1.2); color:var(--turmeric);}
+  .menu-row:not(.active):not(:hover) .r-caret{ animation:caret-hint 2.4s ease-in-out infinite; }
+  @keyframes caret-hint{ 0%,80%,100%{ transform:translateY(0); } 40%{ transform:translateY(3px); } }
 
-  .menu-detail{
-    background:var(--charcoal-2); border:1px solid rgba(246,234,210,.12);
-    border-radius:var(--radius-lg); padding:38px;
-    display:grid; grid-template-columns:180px 1fr auto; gap:30px; align-items:center;
-    box-shadow:var(--shadow);
+  .menu-row .r-detail{
+    max-height:0; opacity:0; overflow:hidden;
+    transition:max-height .4s var(--ease), opacity .35s ease .05s, margin-top .4s var(--ease);
   }
-  .menu-detail .d-icon-wrap{
-    width:180px; height:180px; border-radius:var(--radius-md); background:var(--wood);
-    display:flex; align-items:center; justify-content:center;
-    flex-shrink:0; overflow:hidden;
-    box-shadow:0 12px 26px -12px rgba(0,0,0,.6);
+  .menu-row.active .r-detail{max-height:240px; opacity:1; margin-top:12px;}
+  .menu-row .r-desc{
+    color:rgba(246,234,210,.78); font-size:13.5px; line-height:1.55;
+    opacity:0; transform:translateX(-8px);
+    transition:opacity .4s ease .12s, transform .4s var(--ease) .12s;
   }
-  .menu-detail .d-icon-wrap img{width:100%; height:100%; object-fit:cover; display:block;}
-  .menu-detail h3{font-size:26px; color:var(--turmeric);}
-  .menu-detail .d-desc{color:rgba(246,234,210,.78); font-size:14.5px; margin-top:8px; max-width:480px;}
-  .spice-row{display:flex; align-items:center; gap:8px; margin-top:14px;}
+  .menu-row.active .r-desc{opacity:1; transform:translateX(0);}
+  .spice-row{display:flex; align-items:center; gap:8px; margin-top:12px;}
   .spice-row .lbl{font-family:'Space Mono'; font-size:11px; color:rgba(246,234,210,.55); text-transform:uppercase; letter-spacing:.1em; margin-right:4px;}
-  .chili-ico{width:18px; height:18px; opacity:.25; transition:opacity .3s ease .05s;}
+  .chili-ico{width:16px; height:16px; opacity:.25; transform:scale(0.5); transition:opacity .3s ease, transform .3s var(--ease);}
   .chili-ico.filled{opacity:1;}
-  .menu-detail .d-price-col{text-align:right;}
-  .menu-detail .d-price{font-family:'Anton'; font-size:34px; color:var(--cream);}
-  .menu-detail .d-order{
-    margin-top:12px; display:inline-flex; align-items:center; gap:8px;
-    background:var(--leaf); color:var(--cream-soft); font-weight:700; font-size:13.5px;
-    padding:10px 18px; border-radius:999px; text-decoration:none;
-    transition:transform .2s ease;
+  .menu-row.active .chili-ico{opacity:.25; transform:scale(1);}
+  .menu-row.active .chili-ico.filled{opacity:1; transform:scale(1);}
+  .menu-row.active .chili-ico:nth-child(2){transition-delay:.18s;}
+  .menu-row.active .chili-ico:nth-child(3){transition-delay:.26s;}
+  .menu-row.active .chili-ico:nth-child(4){transition-delay:.34s;}
+  .menu-row .r-order{
+    position:relative; overflow:hidden;
+    margin-top:14px; display:inline-flex; align-items:center; gap:8px;
+    background:var(--leaf); color:var(--cream-soft); font-weight:700; font-size:13px;
+    padding:9px 16px; border-radius:999px; text-decoration:none;
+    transition:transform .2s ease, background .2s ease, box-shadow .2s ease;
+    opacity:0; transform:translateY(6px) scale(.95);
   }
-  .menu-detail .d-order:hover{transform:translateY(-2px); background:var(--leaf-dark);}
+  .menu-row.active .r-order{
+    opacity:1; transform:translateY(0) scale(1);
+    transition:opacity .4s ease .3s, transform .4s var(--ease) .3s, background .2s ease, box-shadow .2s ease;
+  }
+  .menu-row .r-order::after{
+    content:''; position:absolute; top:0; left:-60%; width:40%; height:100%;
+    background:linear-gradient(115deg, transparent, rgba(255,255,255,.35), transparent);
+    transform:skewX(-20deg);
+  }
+  .menu-row .r-order:hover{transform:translateY(-2px) scale(1.03); background:var(--leaf-dark); box-shadow:0 10px 20px -8px rgba(63,87,52,.6);}
+  .menu-row .r-order:hover::after{ animation:shine-sweep .8s ease forwards; }
+  @keyframes shine-sweep{ to{ left:130%; } }
 
   /* ---------- KENAPA ---------- */
   .why-grid{
@@ -415,17 +450,15 @@
     .cta{grid-template-columns:1fr; padding:40px 28px; text-align:center;}
     .cta-info div{font-size:13px;}
     .nav-links{display:none;}
+    .nav > .nav-cta{display:none;}
     .burger{display:block;}
-    .menu-detail{grid-template-columns:1fr; text-align:center;}
-    .menu-detail .d-icon-wrap{width:100%; height:220px; margin:0 auto;}
-    .menu-detail .d-price-col{text-align:center;}
-    .kipas-wrap{height:auto; padding-top:20px;}
-    .blade{position:static; width:44%; height:210px; display:inline-flex; margin:6px; border-radius:22px; transform:none !important;}
-    .kipas-pivot{display:flex; flex-wrap:wrap; justify-content:center;}
+    .menu-row{grid-template-columns:68px 1fr; gap:12px; padding:12px;}
+    .menu-row .r-photo{width:68px; height:68px; border-radius:12px;}
+    .menu-row .r-name{font-size:14.5px;}
+    .menu-row .r-price{font-size:12.5px;}
   }
   @media (max-width:600px){
     .why-grid{grid-template-columns:1fr;}
-    .blade{width:100%;}
   }
 </style>
 </head>
@@ -508,36 +541,12 @@
 <section class="menu-section" id="menu">
   <div class="wrap">
     <div class="section-head" data-reveal>
-      <span class="eyebrow">Kipas Menu Kami</span>
-      <h2>Buka kipasnya, pilih ayammu.</h2>
-      <p>Terinspirasi dari ayam kipas — paha ayam yang disayat dan direntangkan menyerupai kipas sebelum digoreng. Klik tombol di bawah buat buka menu, terus pilih salah satu "bilah" untuk lihat detailnya.</p>
+      <span class="eyebrow">Menu Kami</span>
+      <h2>Pilih ayam kesukaanmu.</h2>
+      <p>Ayam kipas, ayam suwir, ayam geprek, sampai ayam bakar — semua digoreng dan diracik langsung waktu kamu pesan. Klik salah satu menu di bawah untuk lihat detail &amp; harganya.</p>
     </div>
 
-    <div style="text-align:center;" data-reveal>
-      <button class="kipas-open-btn" id="kipasToggle" aria-expanded="false">
-        <span class="fan-ico">🪭</span> Buka Menu Kipas
-      </button>
-    </div>
-
-    <div class="kipas-wrap" id="kipasWrap" data-reveal>
-      <div class="kipas-pivot" id="kipasPivot"></div>
-    </div>
-    <p class="kipas-hint">Klik salah satu menu untuk lihat detail &amp; harga di bawah</p>
-
-    <div class="menu-detail" id="menuDetail" data-reveal>
-      <div class="d-icon-wrap" id="detailIconWrap"></div>
-      <div>
-        <h3 id="detailName">Ayam Kipas Original</h3>
-        <p class="d-desc" id="detailDesc">Paha ayam disayat menyerupai kipas, digoreng garing dengan bumbu rempah rumahan, disajikan dengan sambal bawang segar.</p>
-        <div class="spice-row" id="detailSpice">
-          <span class="lbl">Level pedas</span>
-        </div>
-      </div>
-      <div class="d-price-col">
-        <div class="d-price" id="detailPrice">Rp 15.000</div>
-        <a class="d-order" id="detailOrderLink" href="#" target="_blank" rel="noopener">Pesan Ini →</a>
-      </div>
-    </div>
+    <div class="menu-list" id="menuList" data-reveal></div>
   </div>
 </section>
 
@@ -583,7 +592,7 @@
       <div class="proses-step" data-reveal>
         <div class="proses-num">01</div>
         <h3>Marinasi semalaman</h3>
-        <p>Ayam segar direndam bumbu rempah minimal 2 jam supaya meresap sampai ke tulang.</p>
+        <p>Ayam segar direndam bumbu rempah minimal 12 jam supaya meresap sampai ke tulang.</p>
       </div>
       <div class="proses-step" data-reveal>
         <div class="proses-num">02</div>
@@ -634,8 +643,8 @@
         </div>
       </div>
       <div class="cta-info">
-        <div><span>Jam Buka</span><span>09.00 – 17.00 WIB</span></div>
-        <div><span>Alamat</span><span>Belakang Kampus ISI</span></div>
+        <div><span>Jam Buka</span><span>10.00 – 21.00 WIB</span></div>
+        <div><span>Alamat</span><span>Jl. Contoh Raya No. 12</span></div>
         <div><span>Telepon / WA</span><span>0852-9336-7768</span></div>
         <div><span>Metode Bayar</span><span>Tunai, QRIS, Transfer</span></div>
       </div>
@@ -730,67 +739,80 @@
     }
   ];
 
-  const pivot = document.getElementById('kipasPivot');
-  const wrap = document.getElementById('kipasWrap');
-  const toggleBtn = document.getElementById('kipasToggle');
-
-  const spread = 140; // total degrees of spread
-  const startAngle = -spread / 2;
-  const step = spread / (menuItems.length - 1);
-
-  menuItems.forEach((item, i) => {
-    const blade = document.createElement('button');
-    blade.className = 'blade';
-    blade.style.setProperty('--angle', (startAngle + step * i) + 'deg');
-    blade.setAttribute('data-index', i);
-    blade.innerHTML = `
-      <div class="b-photo" style="background-image:url('${item.img}')"></div>
-      <div class="b-name">${item.name}</div>
-      <div class="b-price">${item.price}</div>
-    `;
-    blade.addEventListener('click', () => selectItem(i));
-    pivot.appendChild(blade);
-  });
-
+  const menuList = document.getElementById('menuList');
   const chiliSvg = (filled) => `<svg class="chili-ico ${filled ? 'filled' : ''}" viewBox="0 0 24 24" fill="${filled ? '#d6431f' : '#f6ead2'}"><path d="M6 4c4-2 9-1 11 3-3 2-6 2-8 5-2 3-1 7 2 9-5 1-10-2-11-7-1-4 1-8 6-10Z"/></svg>`;
 
-  function selectItem(i){
-    const item = menuItems[i];
-    document.querySelectorAll('.blade').forEach((b, idx) => b.classList.toggle('active', idx === i));
-    document.getElementById('detailIconWrap').innerHTML = `<img src="${item.img}" alt="${item.name}">`;
-    document.getElementById('detailName').textContent = item.name;
-    document.getElementById('detailDesc').textContent = item.desc;
-    document.getElementById('detailPrice').textContent = item.price;
-    const spiceRow = document.getElementById('detailSpice');
-    spiceRow.innerHTML = '<span class="lbl">Level pedas</span>' + [1,2,3].map(n => chiliSvg(n <= item.spice)).join('');
-    document.getElementById('detailOrderLink').href = `https://wa.me/6285293367768?text=Halo%20Warung%20Ayam%2C%20saya%20mau%20pesan%20${encodeURIComponent(item.name)}`;
-  }
-
-  toggleBtn.addEventListener('click', () => {
-    const open = wrap.classList.toggle('open');
-    toggleBtn.classList.toggle('active', open);
-    toggleBtn.setAttribute('aria-expanded', open);
-    toggleBtn.querySelector('.fan-ico').nextSibling ? null : null;
-    toggleBtn.lastChild.textContent = open ? ' Tutup Menu Kipas' : ' Buka Menu Kipas';
+  menuItems.forEach((item, i) => {
+    const row = document.createElement('button');
+    row.className = 'menu-row';
+    row.setAttribute('data-index', i);
+    row.setAttribute('aria-expanded', 'false');
+    const waLink = `https://wa.me/6285293367768?text=Halo%20Warung%20Ayam%2C%20saya%20mau%20pesan%20${encodeURIComponent(item.name)}`;
+    const spicyBadge = item.spice >= 3 ? `<span class="r-spicy-badge">🌶️</span>` : '';
+    row.innerHTML = `
+      <div class="r-photo" style="background-image:url('${item.img}')">${spicyBadge}</div>
+      <div class="r-main">
+        <div class="r-top">
+          <span class="r-name">${item.name}</span>
+          <span class="r-price">${item.price}</span>
+          <span class="r-caret">▾</span>
+        </div>
+        <div class="r-detail">
+          <p class="r-desc">${item.desc}</p>
+          <div class="spice-row">
+            <span class="lbl">Level pedas</span>
+            ${[1,2,3].map(n => chiliSvg(n <= item.spice)).join('')}
+          </div>
+          <a class="r-order" href="${waLink}" target="_blank" rel="noopener">Pesan Ini →</a>
+        </div>
+      </div>
+    `;
+    row.addEventListener('click', (e) => {
+      spawnRipple(row, e);
+      selectItem(i);
+    });
+    menuList.appendChild(row);
   });
 
-  // init with first item + auto open kipas on menu section view for delight
+  function spawnRipple(row, e){
+    const rect = row.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height) * 1.4;
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    const x = (e.clientX ?? rect.left + rect.width / 2) - rect.left - size / 2;
+    const y = (e.clientY ?? rect.top + rect.height / 2) - rect.top - size / 2;
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    row.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 650);
+  }
+
+  function selectItem(i){
+    const rows = document.querySelectorAll('.menu-row');
+    rows.forEach((r, idx) => {
+      const isTarget = idx === i;
+      const willOpen = isTarget && !r.classList.contains('active');
+      r.classList.toggle('active', willOpen);
+      r.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    });
+  }
+
   selectItem(0);
-  const menuSection = document.getElementById('menu');
-  let autoOpened = false;
-  const kipasIO = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting && !autoOpened) {
-        autoOpened = true;
-        setTimeout(() => {
-          wrap.classList.add('open');
-          toggleBtn.classList.add('active');
-          toggleBtn.lastChild.textContent = ' Tutup Menu Kipas';
-        }, 400);
+
+  // ---- staggered entrance for menu rows as the section scrolls into view ----
+  const rowIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        const rows = Array.from(menuList.children);
+        rows.forEach((r, idx) => {
+          setTimeout(() => r.classList.add('row-in'), idx * 90);
+        });
+        rowIO.disconnect();
       }
     });
-  }, { threshold: 0.4 });
-  kipasIO.observe(menuSection);
+  }, { threshold: 0.2 });
+  rowIO.observe(menuList);
 </script>
 
 </body>
