@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warung Ayam — Garing di Luar, Berempah di Dalam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Space+Mono:wght@400;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --charcoal:#211812;
+    --charcoal-2:#2b1f16;
+    --wood:#4a3222;
+    --cream:#f6ead2;
+    --cream-soft:#fbf3e3;
+    --paper:#efe2c4;
+    --chili:#d6431f;
+    --chili-dark:#a9330f;
+    --turmeric:#e8a82e;
+    --turmeric-soft:#f2c568;
+    --leaf:#5c7a4c;
+    --leaf-dark:#3f5734;
+    --ink:#241a12;
+    --shadow: 0 18px 40px -18px rgba(20,12,6,0.55);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --ease: cubic-bezier(.22,.9,.32,1);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Plus Jakarta Sans', sans-serif;
+    background:var(--cream-soft);
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+  img,svg{display:block;max-width:100%;}
+  h1,h2,h3{font-family:'Anton', sans-serif; font-weight:400; letter-spacing:0.5px; line-height:1.02; margin:0;}
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    text-transform:uppercase;
+    letter-spacing:0.18em;
+    font-size:12.5px;
+    font-weight:700;
+  }
+  p{line-height:1.6;}
+  a{color:inherit;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+  button{font-family:inherit; cursor:pointer;}
+
+  :focus-visible{outline:3px solid var(--turmeric); outline-offset:3px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:transparent;
+    transition:background .35s var(--ease), box-shadow .35s var(--ease), padding .35s var(--ease);
+    padding:20px 0;
+  }
+  header.scrolled{
+    background:rgba(33,24,18,0.92);
+    backdrop-filter:blur(8px);
+    box-shadow:0 8px 30px -12px rgba(0,0,0,.5);
+    padding:12px 0;
+  }
+  nav{display:flex; align-items:center; justify-content:space-between;}
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Anton', sans-serif;
+    font-size:22px;
+    color:var(--cream);
+    letter-spacing:0.5px;
+    text-decoration:none;
+  }
+  .logo .dot{color:var(--chili);}
+  .nav-links{
+    display:flex; gap:34px; list-style:none; margin:0; padding:0;
+  }
+  .nav-links a{
+    text-decoration:none; color:var(--cream); font-weight:600; font-size:14.5px;
+    position:relative; padding:4px 0;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:-2px; width:0; height:2px; background:var(--turmeric);
+    transition:width .3s var(--ease);
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--chili); color:var(--cream); font-weight:700; font-size:14px;
+    padding:11px 20px; border-radius:999px; text-decoration:none;
+    box-shadow:0 8px 20px -6px rgba(214,67,31,.6);
+    transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+    border:none;
+  }
+  .nav-cta:hover{transform:translateY(-2px); box-shadow:0 12px 24px -6px rgba(214,67,31,.75);}
+  .burger{display:none; background:none; border:none; padding:6px;}
+  .burger span{display:block; width:24px; height:2.5px; background:var(--cream); margin:5px 0; border-radius:2px; transition:.3s;}
+
+  .mobile-menu{
+    position:fixed; inset:0; background:var(--charcoal); z-index:99;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:28px;
+    transform:translateY(-100%); transition:transform .4s var(--ease);
+  }
+  .mobile-menu.open{transform:translateY(0);}
+  .mobile-menu a{color:var(--cream); font-family:'Anton'; font-size:30px; text-decoration:none;}
+  .mobile-menu .nav-cta{margin-top:10px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex; align-items:center;
+    background:
+      radial-gradient(ellipse at 75% 15%, rgba(232,168,46,0.18), transparent 55%),
+      repeating-linear-gradient(115deg, var(--charcoal) 0 42px, var(--charcoal-2) 42px 84px);
+    color:var(--cream);
+    padding-top:120px;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:'';
+    position:absolute; inset:0;
+    background:
+      radial-gradient(circle at 12% 90%, rgba(0,0,0,.35), transparent 45%),
+      radial-gradient(circle at 95% 100%, rgba(0,0,0,.4), transparent 50%);
+    pointer-events:none;
+  }
+  .hero-grid{
+    position:relative; z-index:2;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;
+    width:100%;
+  }
+  .badge-stamp{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--leaf); color:var(--cream-soft);
+    padding:7px 16px; border-radius:999px; font-family:'Space Mono'; font-size:12px; font-weight:700;
+    letter-spacing:0.08em; transform:rotate(-2deg);
+    margin-bottom:22px;
+  }
+  .hero h1{
+    font-size:clamp(42px, 6vw, 76px);
+    color:var(--cream);
+  }
+  .hero h1 .accent{color:var(--turmeric);}
+  .hero h1 .accent2{color:var(--chili);}
+  .hero p.lede{
+    max-width:480px; font-size:17.5px; color:rgba(246,234,210,0.82);
+    margin-top:20px;
+  }
+  .hero-actions{display:flex; gap:14px; margin-top:34px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:15px 26px; border-radius:999px; font-weight:700; font-size:15px;
+    text-decoration:none; border:2px solid transparent; transition:transform .25s var(--ease), box-shadow .25s var(--ease), background .25s;
+  }
+  .btn-primary{background:var(--chili); color:var(--cream); box-shadow:0 10px 26px -8px rgba(214,67,31,.65);}
+  .btn-primary:hover{transform:translateY(-3px) rotate(-0.5deg); box-shadow:0 16px 30px -8px rgba(214,67,31,.8);}
+  .btn-outline{border-color:rgba(246,234,210,0.4); color:var(--cream);}
+  .btn-outline:hover{border-color:var(--turmeric); color:var(--turmeric); transform:translateY(-3px);}
+
+  .hero-stats{display:flex; gap:30px; margin-top:46px; flex-wrap:wrap;}
+  .hero-stats div{border-left:2px solid rgba(246,234,210,.25); padding-left:14px;}
+  .hero-stats strong{display:block; font-family:'Anton'; font-size:26px; color:var(--turmeric);}
+  .hero-stats span{font-size:12.5px; color:rgba(246,234,210,.65); font-family:'Space Mono';}
+
+  .hero-visual{position:relative; display:flex; justify-content:center; align-items:center; height:520px;}
+  .steam{position:absolute; bottom:56%; opacity:.55; mix-blend-mode:screen;}
+  .steam path{stroke:var(--cream); stroke-width:5; fill:none; stroke-linecap:round;}
+  .plate-glow{
+    position:absolute; width:340px; height:340px; border-radius:50%;
+    background:radial-gradient(circle, rgba(232,168,46,0.35), transparent 70%);
+    filter:blur(6px);
+  }
+  .chicken-illustration{position:relative; z-index:2; animation:float 5s ease-in-out infinite;}
+  @keyframes float{0%,100%{transform:translateY(0);} 50%{transform:translateY(-14px);}}
+
+  .sticker{
+    position:absolute; top:18px; right:0; z-index:3;
+    width:118px; height:118px; border-radius:50%;
+    background:var(--turmeric); color:var(--ink);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:'Anton'; font-size:13px; line-height:1.25;
+    box-shadow:var(--shadow); transform:rotate(8deg);
+    animation:spin-slow 14s linear infinite;
+    border:3px dashed var(--ink);
+  }
+  @keyframes spin-slow{from{transform:rotate(8deg);} to{transform:rotate(368deg);}}
+
+  .scroll-cue{
+    position:absolute; bottom:26px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    color:rgba(246,234,210,.6); font-family:'Space Mono'; font-size:11px; letter-spacing:.14em;
+    z-index:2;
+  }
+  .scroll-cue .line{width:1px; height:34px; background:linear-gradient(rgba(246,234,210,.7), transparent); animation:pulse-down 1.8s ease-in-out infinite;}
+  @keyframes pulse-down{0%{opacity:0; transform:scaleY(0.4);} 50%{opacity:1;} 100%{opacity:0; transform:scaleY(1);}}
+
+  /* ---------- reveal ---------- */
+  [data-reveal]{opacity:0; transform:translateY(26px); transition:opacity .7s var(--ease), transform .7s var(--ease);}
+  [data-reveal].in-view{opacity:1; transform:translateY(0);}
+
+  section{padding:110px 0;}
+  .section-head{max-width:640px; margin-bottom:56px;}
+  .section-head .eyebrow{color:var(--chili);}
+  .section-head h2{font-size:clamp(32px,4vw,48px); margin-top:10px;}
+  .section-head p{color:#5b4a38; font-size:16px; margin-top:14px;}
+
+  /* ---------- MENU / KIPAS ---------- */
+  .menu-section{
+    background:var(--charcoal); color:var(--cream); position:relative;
+    overflow:hidden;
+  }
+  .menu-section .section-head .eyebrow{color:var(--turmeric);}
+  .menu-section .section-head p{color:rgba(246,234,210,.72);}
+  .menu-section .section-head h2{color:var(--cream);}
+
+  .kipas-open-btn{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--turmeric); color:var(--ink); font-weight:800; font-family:'Space Mono';
+    font-size:14px; padding:14px 24px; border-radius:999px; border:none;
+    box-shadow:0 10px 24px -8px rgba(232,168,46,.5);
+    transition:transform .25s var(--ease);
+    margin-bottom:64px;
+  }
+  .kipas-open-btn:hover{transform:translateY(-3px) scale(1.02);}
+  .kipas-open-btn .fan-ico{transition:transform .4s var(--ease);}
+  .kipas-open-btn.active .fan-ico{transform:rotate(90deg);}
+
+  .kipas-wrap{
+    position:relative;
+    height:440px;
+    display:flex; align-items:flex-end; justify-content:center;
+    margin-bottom:20px;
+  }
+  .kipas-pivot{
+    position:relative; width:100%; height:100%;
+  }
+  .blade{
+    position:absolute; bottom:0; left:50%;
+    width:150px; height:340px;
+    transform-origin:bottom center;
+    transform:translateX(-50%) rotate(0deg);
+    transition:transform .8s var(--ease), box-shadow .3s ease;
+    background:linear-gradient(180deg, var(--wood), var(--charcoal-2));
+    border-radius:75px 75px 14px 14px;
+    border:1px solid rgba(246,234,210,.12);
+    padding:22px 16px;
+    display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px;
+    cursor:pointer;
+    box-shadow:0 10px 24px -12px rgba(0,0,0,.6);
+  }
+  .kipas-wrap.open .blade{ transform:translateX(-50%) rotate(var(--angle)); }
+  .blade:hover, .blade:focus-visible{ box-shadow:0 0 0 3px var(--turmeric) inset, 0 14px 30px -12px rgba(0,0,0,.7); }
+  .blade.active{ background:linear-gradient(180deg, var(--chili), var(--chili-dark)); }
+  .blade .b-icon{width:48px; height:48px; margin-top:6px;}
+  .blade .b-photo{
+    width:76px; height:76px; margin-top:6px; border-radius:50%;
+    background-size:cover; background-position:center;
+    border:3px solid rgba(246,234,210,.85);
+    box-shadow:0 6px 16px -6px rgba(0,0,0,.6);
+  }
+  .blade .b-name{font-family:'Anton'; font-size:15px; color:var(--cream); letter-spacing:.3px; margin-top:auto;}
+  .blade .b-price{font-family:'Space Mono'; font-size:12px; color:var(--turmeric-soft);}
+  .blade.active .b-price{color:var(--cream);}
+
+  .kipas-hint{
+    text-align:center; font-family:'Space Mono'; font-size:12.5px; color:rgba(246,234,210,.5);
+    margin-top:-2px; margin-bottom:44px;
+  }
+
+  .menu-detail{
+    background:var(--charcoal-2); border:1px solid rgba(246,234,210,.12);
+    border-radius:var(--radius-lg); padding:38px;
+    display:grid; grid-template-columns:180px 1fr auto; gap:30px; align-items:center;
+    box-shadow:var(--shadow);
+  }
+  .menu-detail .d-icon-wrap{
+    width:180px; height:180px; border-radius:var(--radius-md); background:var(--wood);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; overflow:hidden;
+    box-shadow:0 12px 26px -12px rgba(0,0,0,.6);
+  }
+  .menu-detail .d-icon-wrap img{width:100%; height:100%; object-fit:cover; display:block;}
+  .menu-detail h3{font-size:26px; color:var(--turmeric);}
+  .menu-detail .d-desc{color:rgba(246,234,210,.78); font-size:14.5px; margin-top:8px; max-width:480px;}
+  .spice-row{display:flex; align-items:center; gap:8px; margin-top:14px;}
+  .spice-row .lbl{font-family:'Space Mono'; font-size:11px; color:rgba(246,234,210,.55); text-transform:uppercase; letter-spacing:.1em; margin-right:4px;}
+  .chili-ico{width:18px; height:18px; opacity:.25; transition:opacity .3s ease .05s;}
+  .chili-ico.filled{opacity:1;}
+  .menu-detail .d-price-col{text-align:right;}
+  .menu-detail .d-price{font-family:'Anton'; font-size:34px; color:var(--cream);}
+  .menu-detail .d-order{
+    margin-top:12px; display:inline-flex; align-items:center; gap:8px;
+    background:var(--leaf); color:var(--cream-soft); font-weight:700; font-size:13.5px;
+    padding:10px 18px; border-radius:999px; text-decoration:none;
+    transition:transform .2s ease;
+  }
+  .menu-detail .d-order:hover{transform:translateY(-2px); background:var(--leaf-dark);}
+
+  /* ---------- KENAPA ---------- */
+  .why-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:22px;
+  }
+  .why-card{
+    background:var(--cream); border-radius:var(--radius-md); padding:30px 24px;
+    border:1px solid rgba(36,26,18,.08);
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .why-card:hover{transform:translateY(-8px); box-shadow:var(--shadow);}
+  .why-card .w-icon{
+    width:52px; height:52px; border-radius:14px; background:var(--turmeric-soft);
+    display:flex; align-items:center; justify-content:center; margin-bottom:18px;
+  }
+  .why-card .w-icon svg{width:28px; height:28px;}
+  .why-card h3{font-family:'Plus Jakarta Sans'; font-weight:800; font-size:17.5px;}
+  .why-card p{font-size:14px; color:#5b4a38; margin-top:8px;}
+
+  /* ---------- PROSES ---------- */
+  .proses{background:var(--paper);}
+  .proses-track{
+    position:relative; display:grid; grid-template-columns:repeat(3,1fr); gap:40px;
+  }
+  .proses-track::before{
+    content:''; position:absolute; top:44px; left:8%; right:8%; height:2px;
+    background:repeating-linear-gradient(90deg, var(--chili) 0 10px, transparent 10px 20px);
+  }
+  .proses-step{position:relative; text-align:left;}
+  .proses-num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:88px; height:88px; border-radius:50%; background:var(--charcoal); color:var(--turmeric);
+    font-family:'Anton'; font-size:26px; position:relative; z-index:1; margin-bottom:20px;
+    border:4px solid var(--paper);
+  }
+  .proses-step h3{font-family:'Plus Jakarta Sans'; font-weight:800; font-size:18px;}
+  .proses-step p{font-size:14.5px; color:#5b4a38; margin-top:8px; max-width:280px;}
+
+  /* ---------- TESTIMONI ---------- */
+  .testimoni{background:var(--cream-soft); overflow:hidden;}
+  .note-row{display:grid; grid-template-columns:repeat(3,1fr); gap:30px;}
+  .note{
+    background:var(--turmeric-soft); border-radius:4px 4px 60px 4px; padding:30px 26px 26px;
+    box-shadow:0 14px 30px -16px rgba(20,12,6,.4);
+    position:relative;
+  }
+  .note:nth-child(1){transform:rotate(-2.5deg);}
+  .note:nth-child(2){transform:rotate(1.5deg); background:var(--cream);}
+  .note:nth-child(3){transform:rotate(-1deg); background:#e9dcc0;}
+  .note:hover{transform:rotate(0deg) translateY(-6px); transition:transform .3s var(--ease);}
+  .note::before{
+    content:''; position:absolute; top:-10px; left:24px; width:34px; height:16px;
+    background:rgba(214,67,31,.55); border-radius:2px; transform:rotate(-4deg);
+  }
+  .note p{font-family:'Caveat'; font-size:22px; font-weight:600; color:var(--ink); line-height:1.35;}
+  .note .who{font-family:'Space Mono'; font-size:12px; margin-top:14px; color:var(--chili-dark); font-weight:700;}
+
+  /* ---------- CTA ---------- */
+  .cta{
+    background:linear-gradient(135deg, var(--chili), var(--chili-dark));
+    color:var(--cream); border-radius:var(--radius-lg);
+    padding:64px; display:grid; grid-template-columns:1.2fr 1fr; gap:40px; align-items:center;
+    margin:0 auto; max-width:1180px;
+    box-shadow:var(--shadow);
+  }
+  .cta h2{font-size:clamp(30px,4vw,44px); color:var(--cream);}
+  .cta p{color:rgba(246,234,210,.85); margin-top:14px; font-size:15.5px;}
+  .cta .btn-primary{background:var(--turmeric); color:var(--ink); box-shadow:none;}
+  .cta .btn-primary:hover{background:var(--cream);}
+  .cta-info{background:rgba(0,0,0,.18); border-radius:var(--radius-md); padding:26px; font-family:'Space Mono'; font-size:13.5px;}
+  .cta-info div{display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed rgba(246,234,210,.25);}
+  .cta-info div:last-child{border-bottom:none;}
+  .cta-info span:first-child{color:rgba(246,234,210,.6);}
+
+  footer{background:var(--charcoal); color:rgba(246,234,210,.6); padding:44px 0 30px; text-align:center; font-size:13px;}
+  footer .logo{justify-content:center; margin-bottom:12px;}
+  footer .fnote{font-family:'Space Mono'; font-size:11.5px; margin-top:10px; opacity:.6;}
+
+  /* ---------- FLOATING WA ---------- */
+  .float-wa{
+    position:fixed; bottom:26px; right:26px; z-index:90;
+    display:flex; align-items:center; gap:10px;
+    background:var(--leaf); color:var(--cream-soft); text-decoration:none;
+    padding:14px 20px; border-radius:999px; font-weight:700; font-size:14px;
+    box-shadow:0 14px 30px -10px rgba(0,0,0,.5);
+    opacity:0; transform:translateY(20px) scale(.9); pointer-events:none;
+    transition:opacity .35s var(--ease), transform .35s var(--ease);
+  }
+  .float-wa.show{opacity:1; transform:translateY(0) scale(1); pointer-events:auto;}
+  .float-wa .pulse{
+    width:10px; height:10px; border-radius:50%; background:#8be08b; position:relative;
+  }
+  .float-wa .pulse::after{
+    content:''; position:absolute; inset:0; border-radius:50%; background:#8be08b;
+    animation:pulse-ring 1.6s ease-out infinite;
+  }
+  @keyframes pulse-ring{0%{transform:scale(1); opacity:.7;} 100%{transform:scale(2.6); opacity:0;}}
+
+  @media (max-width:980px){
+    .hero-grid{grid-template-columns:1fr; text-align:center;}
+    .hero p.lede{margin-left:auto; margin-right:auto;}
+    .hero-actions{justify-content:center;}
+    .hero-stats{justify-content:center;}
+    .hero-visual{height:380px; margin-top:20px;}
+    .why-grid{grid-template-columns:repeat(2,1fr);}
+    .proses-track{grid-template-columns:1fr; gap:50px;}
+    .proses-track::before{display:none;}
+    .note-row{grid-template-columns:1fr;}
+    .cta{grid-template-columns:1fr; padding:40px 28px; text-align:center;}
+    .cta-info div{font-size:13px;}
+    .nav-links{display:none;}
+    .burger{display:block;}
+    .menu-detail{grid-template-columns:1fr; text-align:center;}
+    .menu-detail .d-icon-wrap{width:100%; height:220px; margin:0 auto;}
+    .menu-detail .d-price-col{text-align:center;}
+    .kipas-wrap{height:auto; padding-top:20px;}
+    .blade{position:static; width:44%; height:210px; display:inline-flex; margin:6px; border-radius:22px; transform:none !important;}
+    .kipas-pivot{display:flex; flex-wrap:wrap; justify-content:center;}
+  }
+  @media (max-width:600px){
+    .why-grid{grid-template-columns:1fr;}
+    .blade{width:100%;}
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="wrap">
+    <nav>
+      <a href="#top" class="logo">🐔 Warung<span class="dot">Ayam</span></a>
+      <ul class="nav-links">
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#kenapa">Kenapa Kami</a></li>
+        <li><a href="#proses">Proses</a></li>
+        <li><a href="#testimoni">Janji Kami</a></li>
+      </ul>
+      <a class="nav-cta" href="https://wa.me/6285293367768?text=Halo%20Warung%20Ayam%2C%20saya%20mau%20pesan" target="_blank" rel="noopener">Pesan Sekarang</a>
+      <button class="burger" id="burgerBtn" aria-label="Buka menu navigasi" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#menu">Menu</a>
+  <a href="#kenapa">Kenapa Kami</a>
+  <a href="#proses">Proses</a>
+  <a href="#testimoni">Janji Kami</a>
+  <a class="nav-cta" href="https://wa.me/6285293367768" target="_blank" rel="noopener">Pesan Sekarang</a>
+</div>
+
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="badge-stamp">🔥 Baru buka — langsung digoreng segar</span>
+      <h1>GARING DI LUAR,<br><span class="accent">BEREMPAH</span> DI <span class="accent2">DALAM</span>.</h1>
+      <p class="lede">Ayam kipas, ayam suwir, ayam geprek, sampai ayam bakar — semua digoreng dan diracik langsung waktu kamu pesan. Nggak ada yang nunggu dari kemarin di sini.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://wa.me/6285293367768?text=Halo%20Warung%20Ayam%2C%20saya%20mau%20pesan" target="_blank" rel="noopener">💬 Pesan via WhatsApp</a>
+        <a class="btn btn-outline" href="#menu">Lihat Menu Kipas →</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>6+</strong><span>OLAHAN AYAM</span></div>
+        <div><strong>100%</strong><span>RESEP RUMAHAN</span></div>
+        <div><strong>0</strong><span>MSG TAMBAHAN</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="sticker">SAMBAL<br>DIULEK<br>LANGSUNG</div>
+      <div class="plate-glow"></div>
+      <svg class="steam" width="220" height="220" viewBox="0 0 220 220">
+        <path d="M60 200 C 40 160, 90 150, 70 110 C 50 70, 100 60, 85 20" opacity="0.6"/>
+        <path d="M140 200 C 160 160, 115 150, 135 110 C 155 70, 110 60, 125 20" opacity="0.4"/>
+      </svg>
+      <svg class="chicken-illustration" width="300" height="300" viewBox="0 0 300 300">
+        <ellipse cx="150" cy="255" rx="120" ry="18" fill="#000" opacity="0.25"/>
+        <circle cx="150" cy="150" r="118" fill="#3a2a1c"/>
+        <circle cx="150" cy="150" r="100" fill="#e9dcc0"/>
+        <path d="M150 60 C 100 60, 65 100, 65 150 C 65 200, 100 235, 150 235 C 200 235, 235 200, 235 150 C 235 100, 200 60, 150 60 Z" fill="#e3a536"/>
+        <path d="M150 75 C 108 75, 80 108, 80 150 C 80 192, 108 220, 150 220 C 192 220, 220 192, 220 150 C 220 108, 192 75, 150 75 Z" fill="#eab84f"/>
+        <g fill="#c9891f" opacity="0.55">
+          <circle cx="120" cy="110" r="5"/><circle cx="150" cy="100" r="4"/><circle cx="180" cy="115" r="5"/>
+          <circle cx="100" cy="150" r="4"/><circle cx="200" cy="145" r="4"/><circle cx="130" cy="180" r="5"/>
+          <circle cx="170" cy="185" r="4"/><circle cx="150" cy="150" r="5"/>
+        </g>
+        <path d="M150 92 C 128 92, 112 112, 112 150 C 112 178, 130 195, 150 200 L 150 200" fill="none"/>
+        <path d="M170 205 L 160 250 L 185 245 Z" fill="#8a5a2a"/>
+        <g stroke="#c1341f" stroke-width="4" stroke-linecap="round">
+          <path d="M95 130 L 85 118"/>
+          <path d="M205 130 L 215 118"/>
+          <path d="M95 170 L 85 182"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>SCROLL</span><span class="line"></span></div>
+</section>
+
+<section class="menu-section" id="menu">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">Kipas Menu Kami</span>
+      <h2>Buka kipasnya, pilih ayammu.</h2>
+      <p>Terinspirasi dari ayam kipas — paha ayam yang disayat dan direntangkan menyerupai kipas sebelum digoreng. Klik tombol di bawah buat buka menu, terus pilih salah satu "bilah" untuk lihat detailnya.</p>
+    </div>
+
+    <div style="text-align:center;" data-reveal>
+      <button class="kipas-open-btn" id="kipasToggle" aria-expanded="false">
+        <span class="fan-ico">🪭</span> Buka Menu Kipas
+      </button>
+    </div>
+
+    <div class="kipas-wrap" id="kipasWrap" data-reveal>
+      <div class="kipas-pivot" id="kipasPivot"></div>
+    </div>
+    <p class="kipas-hint">Klik salah satu menu untuk lihat detail &amp; harga di bawah</p>
+
+    <div class="menu-detail" id="menuDetail" data-reveal>
+      <div class="d-icon-wrap" id="detailIconWrap"></div>
+      <div>
+        <h3 id="detailName">Ayam Kipas Original</h3>
+        <p class="d-desc" id="detailDesc">Paha ayam disayat menyerupai kipas, digoreng garing dengan bumbu rempah rumahan, disajikan dengan sambal bawang segar.</p>
+        <div class="spice-row" id="detailSpice">
+          <span class="lbl">Level pedas</span>
+        </div>
+      </div>
+      <div class="d-price-col">
+        <div class="d-price" id="detailPrice">Rp 15.000</div>
+        <a class="d-order" id="detailOrderLink" href="#" target="_blank" rel="noopener">Pesan Ini →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why" id="kenapa">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">Kenapa Warung Ayam</span>
+      <h2>Bukan sekadar ayam goreng biasa.</h2>
+      <p>Empat alasan pelanggan balik lagi — bukan cuma karena lapar.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card" data-reveal>
+        <div class="w-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#241a12" stroke-width="2"><path d="M12 2v6M8 5l4 3 4-3M4 12h16M6 12l1 8h10l1-8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Resep racikan sendiri</h3>
+        <p>Bumbu diulek dari rempah asli pilihan, bukan bumbu instan siap pakai.</p>
+      </div>
+      <div class="why-card" data-reveal>
+        <div class="w-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#241a12" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3" stroke-linecap="round"/></svg></div>
+        <h3>Selalu segar tiap hari</h3>
+        <p>Ayam dipotong dan dimarinasi tiap pagi, bukan stok beku dari minggu lalu.</p>
+      </div>
+      <div class="why-card" data-reveal>
+        <div class="w-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#241a12" stroke-width="2"><path d="M12 3c3 4 5 6 5 10a5 5 0 0 1-10 0c0-4 2-6 5-10Z"/></svg></div>
+        <h3>Sambal diulek langsung</h3>
+        <p>Nggak pakai sambal botolan — semua digiling di tempat sesuai pesanan.</p>
+      </div>
+      <div class="why-card" data-reveal>
+        <div class="w-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#241a12" stroke-width="2"><path d="M4 12h16M4 6h16M4 18h10" stroke-linecap="round"/></svg></div>
+        <h3>Level pedas custom</h3>
+        <p>Dari yang manis-gurih sampai yang bikin nangis — kamu yang atur levelnya.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proses" id="proses">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">Dari Dapur ke Meja</span>
+      <h2>Tiga langkah, satu piring penuh.</h2>
+    </div>
+    <div class="proses-track">
+      <div class="proses-step" data-reveal>
+        <div class="proses-num">01</div>
+        <h3>Marinasi semalaman</h3>
+        <p>Ayam segar direndam bumbu rempah minimal 2 jam supaya meresap sampai ke tulang.</p>
+      </div>
+      <div class="proses-step" data-reveal>
+        <div class="proses-num">02</div>
+        <h3>Digoreng saat dipesan</h3>
+        <p>Baru masuk wajan panas setelah pesananmu masuk — bukan digoreng dari pagi.</p>
+      </div>
+      <div class="proses-step" data-reveal>
+        <div class="proses-num">03</div>
+        <h3>Disajikan panas-panas</h3>
+        <p>Langsung dibungkus atau disajikan bareng sambal, lalapan, dan nasi hangat.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimoni" id="testimoni">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">Janji Kami</span>
+      <h2>Toko baru, tapi nggak asal-asalan.</h2>
+      <p>Kami baru buka — jadi belum banyak review. Tapi ini yang bisa kami janjikan ke pelanggan pertama.</p>
+    </div>
+    <div class="note-row">
+      <div class="note" data-reveal>
+        <p>"Setiap potong ayam digoreng pas ada pesanan masuk, bukan digoreng dari pagi terus ditumpuk."</p>
+        <div class="who">— TIM WARUNG AYAM</div>
+      </div>
+      <div class="note" data-reveal>
+        <p>"Sambalnya diulek langsung tiap hari, level pedas bisa disesuaikan sama seleramu."</p>
+        <div class="who">— TIM WARUNG AYAM</div>
+      </div>
+      <div class="note" data-reveal>
+        <p>"Kalau ada yang kurang pas di pesanan pertamamu, langsung chat kami — kami dengerin, bukan cuma jualan."</p>
+        <div class="who">— TIM WARUNG AYAM</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta" data-reveal>
+      <div>
+        <h2>Lapar? Tinggal chat aja.</h2>
+        <p>Order langsung ke WhatsApp, atau datang langsung ke warung. Kami siap goreng ayam favoritmu sekarang.</p>
+        <div class="hero-actions" style="margin-top:26px;">
+          <a class="btn btn-primary" href="https://wa.me/6285293367768?text=Halo%20Warung%20Ayam%2C%20saya%20mau%20pesan" target="_blank" rel="noopener">💬 Chat &amp; Pesan Sekarang</a>
+        </div>
+      </div>
+      <div class="cta-info">
+        <div><span>Jam Buka</span><span>09.00 – 17.00 WIB</span></div>
+        <div><span>Alamat</span><span>Belakang Kampus ISI</span></div>
+        <div><span>Telepon / WA</span><span>0852-9336-7768</span></div>
+        <div><span>Metode Bayar</span><span>Tunai, QRIS, Transfer</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="#top" class="logo" style="color:var(--cream);">🐔 Warung<span class="dot">Ayam</span></a>
+    <p>Olahan ayam rumahan, digoreng garing, disajikan hangat — setiap hari.</p>
+    <div class="fnote">© 2026 Warung Ayam.</div>
+  </div>
+</footer>
+
+<a class="float-wa" id="floatWa" href="https://wa.me/6285293367768?text=Halo%20Warung%20Ayam%2C%20saya%20mau%20pesan" target="_blank" rel="noopener">
+  <span class="pulse"></span> Pesan Cepat
+</a>
+
+<script>
+  // ---- header scroll state ----
+  const header = document.getElementById('siteHeader');
+  const floatWa = document.getElementById('floatWa');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    header.classList.toggle('scrolled', y > 40);
+    floatWa.classList.toggle('show', y > 500);
+  });
+
+  // ---- mobile menu ----
+  const burger = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open);
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+  }));
+
+  // ---- scroll reveal ----
+  const revealEls = document.querySelectorAll('[data-reveal]');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // ---- menu data ----
+  const menuItems = [
+    {
+      name: "Ayam Kipas Original",
+      desc: "Paha ayam disayat menyerupai kipas, digoreng garing dengan bumbu rempah rumahan, disajikan dengan sambal bawang segar.",
+      price: "Rp 15.000",
+      spice: 2,
+      img: "images/ayam-kipas.jpg"
+    },
+    {
+      name: "Ayam Goreng Kremes",
+      desc: "Ayam goreng tepung dengan taburan kremes ekstra renyah, cocok buat yang suka tekstur garing berlapis.",
+      price: "Rp 13.000",
+      spice: 1,
+      img: "images/ayam-kremes.jpg"
+    },
+    {
+      name: "Ayam Suwir Pedas",
+      desc: "Daging ayam disuwir halus, ditumis bersama bumbu rempah pedas — pas buat lauk nasi hangat atau bekal.",
+      price: "Rp 12.000",
+      spice: 3,
+      img: "images/ayam-suwir.jpg"
+    },
+    {
+      name: "Ayam Geprek Sambal Korek",
+      desc: "Ayam goreng tepung digeprek langsung dengan sambal korek pedas menyengat, favorit anak kos.",
+      price: "Rp 12.000",
+      spice: 3,
+      img: "images/ayam-geprek.jpg"
+    },
+    {
+      name: "Ayam Bakar Kecap",
+      desc: "Ayam dibakar dengan olesan kecap manis dan bumbu rempah, aroma smoky dengan rasa gurih-manis seimbang.",
+      price: "Rp 15.000",
+      spice: 1,
+      img: "images/ayam-bakar.jpg"
+    },
+    {
+      name: "Ayam Rica-Rica",
+      desc: "Potongan ayam dimasak dengan bumbu rica pedas manis khas, kaya rempah dan cocok buat pecinta rasa kuat.",
+      price: "Rp 13.000",
+      spice: 3,
+      img: "images/ayam-rica.jpg"
+    }
+  ];
+
+  const pivot = document.getElementById('kipasPivot');
+  const wrap = document.getElementById('kipasWrap');
+  const toggleBtn = document.getElementById('kipasToggle');
+
+  const spread = 140; // total degrees of spread
+  const startAngle = -spread / 2;
+  const step = spread / (menuItems.length - 1);
+
+  menuItems.forEach((item, i) => {
+    const blade = document.createElement('button');
+    blade.className = 'blade';
+    blade.style.setProperty('--angle', (startAngle + step * i) + 'deg');
+    blade.setAttribute('data-index', i);
+    blade.innerHTML = `
+      <div class="b-photo" style="background-image:url('${item.img}')"></div>
+      <div class="b-name">${item.name}</div>
+      <div class="b-price">${item.price}</div>
+    `;
+    blade.addEventListener('click', () => selectItem(i));
+    pivot.appendChild(blade);
+  });
+
+  const chiliSvg = (filled) => `<svg class="chili-ico ${filled ? 'filled' : ''}" viewBox="0 0 24 24" fill="${filled ? '#d6431f' : '#f6ead2'}"><path d="M6 4c4-2 9-1 11 3-3 2-6 2-8 5-2 3-1 7 2 9-5 1-10-2-11-7-1-4 1-8 6-10Z"/></svg>`;
+
+  function selectItem(i){
+    const item = menuItems[i];
+    document.querySelectorAll('.blade').forEach((b, idx) => b.classList.toggle('active', idx === i));
+    document.getElementById('detailIconWrap').innerHTML = `<img src="${item.img}" alt="${item.name}">`;
+    document.getElementById('detailName').textContent = item.name;
+    document.getElementById('detailDesc').textContent = item.desc;
+    document.getElementById('detailPrice').textContent = item.price;
+    const spiceRow = document.getElementById('detailSpice');
+    spiceRow.innerHTML = '<span class="lbl">Level pedas</span>' + [1,2,3].map(n => chiliSvg(n <= item.spice)).join('');
+    document.getElementById('detailOrderLink').href = `https://wa.me/6285293367768?text=Halo%20Warung%20Ayam%2C%20saya%20mau%20pesan%20${encodeURIComponent(item.name)}`;
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    const open = wrap.classList.toggle('open');
+    toggleBtn.classList.toggle('active', open);
+    toggleBtn.setAttribute('aria-expanded', open);
+    toggleBtn.querySelector('.fan-ico').nextSibling ? null : null;
+    toggleBtn.lastChild.textContent = open ? ' Tutup Menu Kipas' : ' Buka Menu Kipas';
+  });
+
+  // init with first item + auto open kipas on menu section view for delight
+  selectItem(0);
+  const menuSection = document.getElementById('menu');
+  let autoOpened = false;
+  const kipasIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !autoOpened) {
+        autoOpened = true;
+        setTimeout(() => {
+          wrap.classList.add('open');
+          toggleBtn.classList.add('active');
+          toggleBtn.lastChild.textContent = ' Tutup Menu Kipas';
+        }, 400);
+      }
+    });
+  }, { threshold: 0.4 });
+  kipasIO.observe(menuSection);
+</script>
+
+</body>
+</html>
